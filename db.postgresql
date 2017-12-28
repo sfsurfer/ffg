@@ -1,0 +1,38 @@
+CREATE DATABASE fantasy_football_graphs;
+/connect fantasy_football_graphs;
+
+CREATE TABLE IF NOT EXISTS teams (
+  team_key TEXT PRIMARY KEY NOT NULL,
+  scoreboard JSONB DEFAULT NULL,
+  luck NUMERIC DEFAULT 0,
+  created TIMESTAMP default current_timestamp,
+  modified TIMESTAMP DEFAULT current_timestamp
+);
+
+CREATE OR REPLACE FUNCTION update_modified_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.modified = now();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON teams FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+
+
+-- CREATE DATABASE IF NOT EXISTS yahoodb;
+--
+-- use yahoodb;
+--
+-- CREATE TABLE IF NOT EXISTS yahoo_users (
+--   id BIGSERIAL PRIMARY KEY NOT NULL,
+--   username TEXT NOT NULL,
+--   password TEXT NOT NULL,
+--   leagues TEXT[]
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS yahoo_league (
+--   id BIGSERIAL PRIMARY KEY NOT NULL,
+--   name TEXT NOT NULL,
+--   public BOOLEAN
+-- );

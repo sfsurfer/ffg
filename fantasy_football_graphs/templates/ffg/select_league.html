@@ -1,0 +1,110 @@
+{% load static from staticfiles %}
+{% load chartkick %}
+
+<html>
+<head>
+<style>
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
+
+#container {
+  min-width: 600px;
+  max-width: 800px;
+  height: 550px;
+  margin: 0 auto
+}
+
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="{% static "chartkick.js" %}"></script>
+</head>
+<body>
+  <h1>In Oauth Endpoint</h1>
+  <div class="dropdown">
+    <button onclick="leagueDropdown()" class="dropbtn">Select League</button>
+    <div id="myDropdown" class="dropdown-content">
+{% for key,value in scoreboards.items %}
+      <button onclick="showChart({{ value.name }}, {{ value.chart_data }})">{{ value.name }}</button>
+      <a href="#">{{ value.name }}</a>
+{% endfor %}
+    </div>
+  </div>
+  <div id='container' display: none></div>
+<script>
+function showChart(name, data) {
+  consule.log("Running show chart")
+  Highcharts.chart('container',{
+    title: {
+      text: name
+    },
+    xAxis: {
+      title: {
+        text: 'Week'
+      }
+    },
+    series: data
+  });
+  document.getElementById('container').style.display = '';
+}
+
+function leagueDropdown() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+};
+</script>
+{% for key,value in scoreboards.items %}
+{%  line_chart value.chart_data with height='550px' min=50 %}
+{% endfor %}
+
+</body>
+</html>
