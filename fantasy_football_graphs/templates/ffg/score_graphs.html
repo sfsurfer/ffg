@@ -130,7 +130,7 @@ h2{
 {% for key,value in scoreboards.items %}
       <div class="tabpage" id="tabpage_{{ key }}">
         <h2>{{ value.name }}</h2>
-        {%  line_chart value.chart_data with height='550px' min=40 %}
+        {% line_chart value.chart_data with height='550px' min=40 %}
       </div>
 {% endfor %}
     </div>
