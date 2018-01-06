@@ -7,7 +7,6 @@ from yahoo_user import YahooUser
 from models import Leagues
 from logger import Logger
 
-
 from os import access, R_OK
 from os.path import isfile
 
