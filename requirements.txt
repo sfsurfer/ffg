@@ -8,7 +8,7 @@ oauth2-provider==0.0
 psycopg2==2.7.3.2
 pyaml==17.12.1
 pytz==2017.3
-PyYAML==3.12
+PyYAML==5.1
 rauth==0.7.3
 requests==2.18.4
 urllib3==1.22
